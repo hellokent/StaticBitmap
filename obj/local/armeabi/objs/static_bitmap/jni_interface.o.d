@@ -42,7 +42,12 @@ obj/local/armeabi/objs/static_bitmap/jni_interface.o: \
  /opt/android-ndk/platforms/android-14/arch-arm/usr/include/linux/time.h \
  /opt/android-ndk/platforms/android-14/arch-arm/usr/include/asm/siginfo.h \
  /opt/android-ndk/platforms/android-14/arch-arm/usr/include/asm-generic/siginfo.h \
- jni/jpeg/jpeglib.h jni/jpeg/jconfig.h jni/jpeg/jmorecfg.h
+ jni/jpeg/jpeglib.h jni/jpeg/jconfig.h jni/jpeg/jmorecfg.h \
+ /opt/android-ndk/platforms/android-14/arch-arm/usr/include/sys/mman.h \
+ /opt/android-ndk/platforms/android-14/arch-arm/usr/include/asm/mman.h \
+ /opt/android-ndk/platforms/android-14/arch-arm/usr/include/asm-generic/mman.h \
+ /opt/android-ndk/platforms/android-14/arch-arm/usr/include/asm-generic/mman-common.h \
+ /opt/android-ndk/platforms/android-14/arch-arm/usr/include/asm/page.h
 
 /opt/android-ndk/platforms/android-14/arch-arm/usr/include/stdio.h:
 
@@ -135,3 +140,13 @@ jni/jpeg/jpeglib.h:
 jni/jpeg/jconfig.h:
 
 jni/jpeg/jmorecfg.h:
+
+/opt/android-ndk/platforms/android-14/arch-arm/usr/include/sys/mman.h:
+
+/opt/android-ndk/platforms/android-14/arch-arm/usr/include/asm/mman.h:
+
+/opt/android-ndk/platforms/android-14/arch-arm/usr/include/asm-generic/mman.h:
+
+/opt/android-ndk/platforms/android-14/arch-arm/usr/include/asm-generic/mman-common.h:
+
+/opt/android-ndk/platforms/android-14/arch-arm/usr/include/asm/page.h:

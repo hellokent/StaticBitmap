@@ -47,14 +47,18 @@ public class StaticBitmapJni {
         return drawRegion2Bitmap(bitmap, filePath, CACHE_FILE, true, rect.left, rect.top, rect.right, rect.bottom);
     }
 
-	private native int map(String filePath, String cacheFilePath, boolean needResize,
+	public int map(String filePath){
+		return map(filePath, CACHE_FILE, false, 0, 0, 0, 0);
+	}
+
+	public native int map(String filePath, String cacheFilePath, boolean needResize,
 	                                int topx, int topy, int btmx, int btmy);
 
 	public native int getWidth(int ptr);
 
 	public native int getHeight(int ptr);
 
-	private native int flushData(int ptr, Bitmap bitmap, int topx, int topy);
+	public native int flushData(int ptr, Bitmap bitmap, int topx, int topy);
 
-	private native int unmap(int ptr);
+	public native int unmap(int ptr);
 }

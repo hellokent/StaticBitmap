@@ -36,6 +36,8 @@ int readRGBA (Image *image, FILE* file);
 void resize(Image dst, Image src, int core);
 
 void draw2Bitmap(uint8_t *bitmap, Image* , AndroidBitmapInfo* );
+
+void draw2Bitmap_offset(uint8_t *bitmap, Image* , AndroidBitmapInfo*, int , int );
 }
 
 

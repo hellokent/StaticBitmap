@@ -374,7 +374,7 @@ public:
     *(((uint8_t*)dst) + 3) =  *(((uint8_t*)src) + 3); \
 }
 
-void draw2Bitmap(uint8_t *bitmapPtr, Image* image, AndroidBitmapInfo* info){
+void draw2Bitmap_offset(uint8_t *bitmapPtr, Image* image, AndroidBitmapInfo* info, int offset_x, int offset_y){
     const PixelIO *dstIO = PixelIO::get(info->format);
     const PixelIO *srcIO = PixelIO::get(PIXEL_RGBA8888);
     const int dstSize = dstIO->size();
@@ -390,19 +390,30 @@ void draw2Bitmap(uint8_t *bitmapPtr, Image* image, AndroidBitmapInfo* info){
         start_x_offset = (info->width - image->width) / 2;
     }
 
+    offset_x = offset_x + info->width > image->width ? image->width - info->width : offset_x;
+    offset_y = offset_y + info->height > image->height ? image->height - info->height : offset_y;
+
+    offset_x = offset_x < 0 ? 0 : offset_x;
+    offset_y = offset_y < 0 ? 0 : offset_y;
+
     LOGD("info->format:%d, dstSize:%d, srcSize:%d, info(%d, %d)", info->format, dstSize, srcSize, info->width, info->height);
     LOGI("base:%p, width:%d, height:%d, stride:%d", image->base, image->width, image->height, image->stride);
-    LOGI("offset(%d, %d)", start_x_offset, start_y_offset);
+    LOGI("offset1(%d, %d)", start_x_offset, start_y_offset);
+    LOGI("offset2(%d, %d)", offset_x, offset_y);
 
 
-    for (int i = 0; i < image->height; ++i){
-        for (int j = 0; j < image->width; ++j){
-            dst_offset = (j + (start_y_offset + i) * info->height + start_x_offset) * dstSize;
+    for (int i = offset_y; i < image->height; ++i){
+        for (int j = offset_x; j < image->width; ++j){
+            dst_offset = (j - offset_x + (start_y_offset + i - offset_y) * info->height + start_x_offset) * dstSize;
             src_offset = (i * image->width + j) * srcSize;
             dstIO->write(bitmapPtr + dst_offset, srcIO->read(image->base + src_offset));
         }
     }
-    LOGI("draw2Bitmap finshed");
+    LOGI("draw2Bitmap finished");
+}
+
+void draw2Bitmap(uint8_t *bitmapPtr, Image* image, AndroidBitmapInfo* info){
+    draw2Bitmap_offset(bitmapPtr, image, info, 0, 0);
 }
 
 

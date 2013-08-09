@@ -10,9 +10,28 @@
             android:text="Hello World, MainActivity"
             />
     <ImageView
-            android:id="@+id/image"
+        android:id="@+id/image1"
         android:layout_width="200px"
         android:layout_height="200px"
         android:background="@android:color/holo_blue_bright"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dip"/>
+
+    <ImageView
+            android:id="@+id/image2"
+            android:layout_width="200px"
+            android:layout_height="200px"
+            android:background="@android:color/holo_blue_bright"/>
+    <View
+            android:layout_width="match_parent"
+            android:layout_height="10dip"/>
+
+    <ImageView
+            android:id="@+id/image3"
+            android:layout_width="200px"
+            android:layout_height="200px"
+            android:background="@android:color/holo_blue_bright"/>
 </LinearLayout>
 
