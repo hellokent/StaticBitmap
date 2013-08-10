@@ -189,5 +189,8 @@ JNIEXPORT jint JNICALL I(flushData)(JNIEnv *env, jobject object, jint ptr, jobje
 }
 
 JNIEXPORT void JNICALL I(unmap)(JNIEnv *env, jobject object, jint ptr){
-   free((Image *)ptr);
+   Image* image = (Image *) ptr;
+   destoryImage(image);
+   free(image);
+
 }

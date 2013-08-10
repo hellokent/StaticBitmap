@@ -381,6 +381,7 @@ void draw2Bitmap_offset(uint8_t *bitmapPtr, Image* image, AndroidBitmapInfo* inf
     const int srcSize = srcIO->size();
     int start_y_offset = 0, start_x_offset = 0;
     int pixels, dst_offset, src_offset;
+    int pixel_width, pixel_height;
 
     if(image->height < info->height){
         start_y_offset = (info->height - image->height) / 2;
@@ -396,14 +397,18 @@ void draw2Bitmap_offset(uint8_t *bitmapPtr, Image* image, AndroidBitmapInfo* inf
     offset_x = offset_x < 0 ? 0 : offset_x;
     offset_y = offset_y < 0 ? 0 : offset_y;
 
+    pixel_width = (image->width - offset_x) <= info->width ? (image->width - offset_x) : info->width;
+    pixel_height = (image->height - offset_y) <= info->height ? (image->height - offset_y) : info->height;
+
     LOGD("info->format:%d, dstSize:%d, srcSize:%d, info(%d, %d)", info->format, dstSize, srcSize, info->width, info->height);
     LOGI("base:%p, width:%d, height:%d, stride:%d", image->base, image->width, image->height, image->stride);
     LOGI("offset1(%d, %d)", start_x_offset, start_y_offset);
     LOGI("offset2(%d, %d)", offset_x, offset_y);
+    LOGI("pixel(%d, %d)", (image->width - offset_x), (image->height - offset_y));
+    LOGI("draw pixel(%d, %d)", pixel_width, pixel_height);
 
-
-    for (int i = offset_y; i < image->height; ++i){
-        for (int j = offset_x; j < image->width; ++j){
+    for (int i = offset_y; i < pixel_height + offset_y; ++i){
+        for (int j = offset_x; j < pixel_width + offset_x; ++j){
             dst_offset = (j - offset_x + (start_y_offset + i - offset_y) * info->height + start_x_offset) * dstSize;
             src_offset = (i * image->width + j) * srcSize;
             dstIO->write(bitmapPtr + dst_offset, srcIO->read(image->base + src_offset));
