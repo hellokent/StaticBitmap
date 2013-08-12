@@ -107,6 +107,7 @@ JNIEXPORT jint JNICALL I(map)(JNIEnv * env, jobject object,
                                 jint top_x, jint top_y, jint btm_x, jint btm_y){
     uint8_t *ptr = 0;
     Image *src_image = new Image;
+    src_image->info = NULL;
     char const *path = env->GetStringUTFChars(jpath, 0);
     char const *cache_path = env->GetStringUTFChars(jcachePath, 0);
 
@@ -170,8 +171,20 @@ JNIEXPORT jint JNICALL I(flushData)(JNIEnv *env, jobject object, jint ptr, jobje
     Image *image = (Image *)ptr;
     void * bitmap_ptr;
 
-    AndroidBitmapInfo info = {0,0,0,0,0};
-    AndroidBitmap_getInfo(env, bitmap, &info);
+    if (topx < 0 && topy < 0){
+        return 0;
+    }
+
+    if (topx > image->width && topy < image->height){
+        return 0;
+    }
+
+    if(!image->info){
+        AndroidBitmapInfo *info = new AndroidBitmapInfo;
+        AndroidBitmap_getInfo(env, bitmap, info);
+        image->info = info;
+    }
+
     AndroidBitmap_lockPixels(env, bitmap, (void**)&bitmap_ptr);
     if(!ptr) {
         LOGE("lock bitmap failed");
@@ -180,11 +193,10 @@ JNIEXPORT jint JNICALL I(flushData)(JNIEnv *env, jobject object, jint ptr, jobje
 
 
 	//4. draw to bitmap
-    draw2Bitmap_offset((uint8_t *)bitmap_ptr, image, &info, topx, topy);
+    draw2Bitmap_offset((uint8_t *)bitmap_ptr, image, image->info, topx, topy);
 	LOGD("draw2Bitmap finished");
 	AndroidBitmap_unlockPixels(env, bitmap);
 	LOGD("unlock Pixels finshed");
-
     return 1;
 }
 
@@ -192,5 +204,4 @@ JNIEXPORT void JNICALL I(unmap)(JNIEnv *env, jobject object, jint ptr){
    Image* image = (Image *) ptr;
    destoryImage(image);
    free(image);
-
 }

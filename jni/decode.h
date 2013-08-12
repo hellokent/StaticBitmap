@@ -19,6 +19,7 @@ typedef struct {
     int pixel_type;
     int width;
     int height;
+    AndroidBitmapInfo *info;
 }Image;
 
 
